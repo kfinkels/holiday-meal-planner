@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "project": {
+    "created": "2026-03-18T11:43:54.354283",
+    "last_modified": "2026-03-18T11:43:54.354328"
+  },
+  "team_directives": {
+    "path": null
+  },
+  "architecture": {
+    "diagram_format": "mermaid",
+    "views": "core",
+    "adr": {
+      "heuristic": "surprising",
+      "check_constitution": true,
+      "allow_overrides": true,
+      "duplication_threshold": "strict",
+      "max_adrs": 10,
+      "custom_rules": {
+        "obvious": [],
+        "surprising": []
+      }
+    },
+    "deduplication": {
+      "enabled": true,
+      "scan_paths": [
+        "docs/",
+        "*.md"
+      ],
+      "reference_instead_of_duplicate": true,
+      "auto_merge_existing": true
+    }
+  },
+  "skills": {
+    "auto_activation_threshold": 0.7,
+    "max_auto_skills": 3,
+    "preserve_user_edits": true,
+    "registry_url": "https://skills.sh/api"
+  }
+}

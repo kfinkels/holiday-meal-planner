@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "skills": {},
+  "lockfile": {},
+  "config": {
+    "auto_activation_threshold": 0.7,
+    "max_auto_skills": 3,
+    "preserve_user_edits": true
+  }
+}

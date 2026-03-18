@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "extensions": {
+    "levelup": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:d10dd6c11b16423ae2e24d9c92fbd9cd84edad3346205363f978fd6539c12d34",
+      "enabled": true,
+      "registered_commands": {
+        "claude": [
+          "adlc.levelup.init",
+          "levelup.init",
+          "adlc.levelup.clarify",
+          "levelup.clarify",
+          "adlc.levelup.specify",
+          "levelup.specify",
+          "adlc.levelup.skills",
+          "levelup.skills",
+          "adlc.levelup.implement",
+          "levelup.implement",
+          "adlc.levelup.trace",
+          "levelup.trace"
+        ]
+      },
+      "installed_at": "2026-03-18T09:43:54.424708+00:00"
+    },
+    "quick": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:24270d20eb86bf4c34deea8727439912c8af6f3a17df6511511864050d919d94",
+      "enabled": true,
+      "registered_commands": {
+        "claude": [
+          "adlc.quick.implement",
+          "quick.implement"
+        ]
+      },
+      "installed_at": "2026-03-18T09:43:54.427294+00:00"
+    },
+    "product": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:2a2d7e7ce2dbb36aa4bf6320d79a88b2b0913f8157fc6d02865f2218a68abb72",
+      "enabled": true,
+      "registered_commands": {
+        "claude": [
+          "adlc.product.init",
+          "product.init",
+          "adlc.product.specify",
+          "product.specify",
+          "adlc.product.clarify",
+          "product.clarify",
+          "adlc.product.implement",
+          "product.implement",
+          "adlc.product.analyze",
+          "product.analyze",
+          "adlc.product.validate",
+          "product.validate"
+        ]
+      },
+      "installed_at": "2026-03-18T09:43:54.438062+00:00"
+    },
+    "architect": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:438276858c84d762e481ee0f52fd21db27d6cfae7c6689cf63da2813803e57b3",
+      "enabled": true,
+      "registered_commands": {
+        "claude": [
+          "adlc.architect.init",
+          "architect.init",
+          "adlc.architect.specify",
+          "architect.specify",
+          "adlc.architect.clarify",
+          "architect.clarify",
+          "adlc.architect.implement",
+          "architect.implement",
+          "adlc.architect.analyze",
+          "architect.analyze",
+          "adlc.architect.validate",
+          "architect.validate"
+        ]
+      },
+      "installed_at": "2026-03-18T09:43:54.451007+00:00"
+    }
+  }
+}

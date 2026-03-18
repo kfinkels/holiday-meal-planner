@@ -1,0 +1,36 @@
+installed: []
+settings:
+  auto_execute_hooks: true
+hooks:
+  before_spec:
+  - extension: product
+    command: adlc.product.specify
+    enabled: true
+    optional: true
+    prompt: Execute adlc.product.specify?
+    description: Create/verify product requirements before feature specification
+    condition: null
+  after_spec:
+  - extension: product
+    command: adlc.product.validate
+    enabled: true
+    optional: true
+    prompt: Execute adlc.product.validate?
+    description: Validate feature spec alignment with PRD (READ-ONLY)
+    condition: null
+  before_plan:
+  - extension: architect
+    command: adlc.architect.specify
+    enabled: true
+    optional: true
+    prompt: Execute adlc.architect.specify?
+    description: Create feature-level ADRs and verify architecture exists
+    condition: null
+  after_plan:
+  - extension: architect
+    command: adlc.architect.validate
+    enabled: true
+    optional: true
+    prompt: Execute adlc.architect.validate?
+    description: Validate plan alignment with architecture (READ-ONLY)
+    condition: null

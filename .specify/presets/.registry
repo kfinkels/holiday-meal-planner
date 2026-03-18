@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "presets": {
+    "agentic-sdlc": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:51a452dec853ae40cd1caed2758793f3310c13991b376b4375c6603d769a46d0",
+      "enabled": true,
+      "priority": 1,
+      "registered_commands": {
+        "claude": [
+          "adlc.spec.specify",
+          "spec.specify",
+          "adlc.spec.plan",
+          "spec.plan",
+          "adlc.spec.clarify",
+          "spec.clarify",
+          "adlc.spec.tasks",
+          "spec.tasks",
+          "adlc.spec.checklist",
+          "spec.checklist",
+          "adlc.spec.analyze",
+          "spec.analyze",
+          "adlc.spec.implement",
+          "spec.implement",
+          "adlc.spec.constitution",
+          "spec.constitution"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-03-18T09:43:54.485786+00:00"
+    }
+  }
+}
