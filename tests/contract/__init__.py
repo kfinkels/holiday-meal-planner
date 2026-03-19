@@ -1,0 +1,1 @@
+"""Contract tests for Holiday Meal Planner interfaces."""

@@ -1,11 +1,11 @@
 {
   "version": "1.0",
   "project": {
-    "created": "2026-03-18T11:43:54.354283",
-    "last_modified": "2026-03-18T11:43:54.354328"
+    "created": "2026-03-18T11:43:54.620302",
+    "last_modified": "2026-03-18T11:43:54.620332"
   },
   "team_directives": {
-    "path": null
+    "path": "/Users/keren.finkelstein/tikal/holiday_meal_planner/agentic-sdlc-team-ai-directives"
   },
   "architecture": {
     "diagram_format": "mermaid",

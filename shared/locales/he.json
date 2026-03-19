@@ -1,0 +1,124 @@
+{
+  "grocery_list": {
+    "header": "🛒 רשימת קניות עבור {serving_size} אנשים",
+    "items_count": "• {total_items} פריטים",
+    "generated": "📅 נוצר: {timestamp}",
+    "consolidation_notes": "📋 הערות איחוד:",
+    "no_items": "אין פריטים ברשימת הקניות"
+  },
+  "timeline": {
+    "header": "📅 לוח זמנים להכנה עבור {meal_date}",
+    "total_prep_time": "⏱️  זמן הכנה כולל: {hours} שעות {minutes} דקות",
+    "complexity": "רמת מורכבות: {stars} ({score}/10)",
+    "optimization_notes": "💡 הערות אופטימיזציה:",
+    "day_of_meal": "🍽️  {day_name} (יום הארוחה)",
+    "one_day_before": "📅 {day_name} (יום לפני)",
+    "days_before": "📅 {day_name} ({days} ימים לפני)",
+    "workload": "עומס עבודה: {stars} ({level}/5)",
+    "duration_hours": "משך זמן: {hours} שעות {minutes} דקות",
+    "duration_minutes": "משך זמן: {minutes} דקות",
+    "no_tasks": "אין משימות מתוכננות",
+    "depends_on": "תלוי ב: {dependencies}",
+    "no_timeline": "📅 אין לוח זמנים זמין להכנה"
+  },
+  "categories": {
+    "protein": "🥩 חלבונים",
+    "vegetable": "🥕 ירקות",
+    "fruit": "🍎 פירות",
+    "dairy": "🥛 חלב ומוצריו",
+    "grain": "🌾 דגנים",
+    "herb": "🌿 עשבי תיבול",
+    "spice": "🌶️ תבלינים",
+    "fat": "🧈 שומנים",
+    "other": "🔹 אחר"
+  },
+  "units": {
+    "cup": "כוס",
+    "cups": "כוסות",
+    "tablespoon": "כף",
+    "tablespoons": "כפות",
+    "teaspoon": "כפית",
+    "teaspoons": "כפיות",
+    "fluid_ounce": "אונקיית נוזלים",
+    "pint": "פינט",
+    "quart": "קווארט",
+    "gallon": "גלון",
+    "liter": "ליטר",
+    "milliliter": "מ\"ל",
+    "pound": "פאונד",
+    "pounds": "פאונד",
+    "ounce": "אונקיה",
+    "ounces": "אונקיות",
+    "gram": "גרם",
+    "grams": "גרם",
+    "kilogram": "ק\"ג",
+    "whole": "שלם",
+    "piece": "יחידה",
+    "pieces": "יחידות",
+    "clove": "שן",
+    "cloves": "שיניים",
+    "bunch": "צרור",
+    "package": "אריזה",
+    "to_taste": "לפי הטעם",
+    "pinch": "קורט",
+    "dash": "מעט"
+  },
+  "timing": {
+    "make_ahead": "📦",
+    "day_before": "🌙",
+    "day_of_early": "🌅",
+    "day_of_late": "🍳",
+    "immediate": "⚡"
+  },
+  "processing": {
+    "header": "🍽️  תוצאות תכנון ארוחת חג",
+    "summary": "✅ עובדו {items_processed} פריטים תוך {processing_time} שניות (שיעור הצלחה {success_rate}%)",
+    "failed_items": "⚠️  נכשל בעיבוד {count} פריטים:",
+    "retry_suggested": "💡 מומלץ לנסות שוב",
+    "details": "📊 פרטי עיבוד:",
+    "processing_time": "זמן עיבוד: {seconds} שניות",
+    "web_requests": "בקשות רשת שנשלחו: {count}",
+    "average_confidence": "ביטחון ממוצע: {confidence}",
+    "processed_items": "פריטים מעובדים ({count}):",
+    "more_items": "... ועוד {count} פריטים"
+  },
+  "progress": {
+    "phase": "🔄 {phase}: {current}/{total} {item_name}",
+    "percentage": "{percentage}%"
+  },
+  "errors": {
+    "security_suggestions": [
+      "וודא שהקישורים משתמשים בפרוטוקול HTTPS",
+      "בדוק שהקישור הוא מאתר מתכונים מהימן"
+    ],
+    "webscraping_suggestions": [
+      "וודא שהקישור נגיש ומכיל מתכון תקין",
+      "נסה אתר מתכונים אחר אם זה לא עובד",
+      "בדוק את החיבור לאינטרנט"
+    ],
+    "parsing_suggestions": [
+      "נסה להשתמש בתיאור במקום קישור",
+      "וודא שהקישור מפנה לעמוד מתכון (לא פוסט בלוג או עמוד ראשי)",
+      "ייתכן שאתרי מתכונים מסוימים עדיין לא נתמכים"
+    ],
+    "validation_suggestions": [
+      "בדוק שכל השדות הנדרשים מולאו",
+      "וודא שמספר המנות סביר (1-100 אנשים)"
+    ],
+    "consolidation_suggestions": [
+      "ייתכן שחלק מהמרכיבים יש להם יחידות סותרות",
+      "נסה לעבד עם רמת דמיון נמוכה יותר"
+    ],
+    "default_suggestions": [
+      "אנא בדוק את הקלט ונסה שוב",
+      "אם הבעיה נמשכת, נסה גישה אחרת"
+    ],
+    "context": "📝 הקשר:",
+    "suggestions": "💡 הצעות:"
+  },
+  "confidence": {
+    "high": "✅ {percentage}%",
+    "medium": "⚠️  {percentage}%",
+    "low": "❓ {percentage}%"
+  }
+}

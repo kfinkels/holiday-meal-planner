@@ -1,0 +1,586 @@
+openapi: 3.0.3
+info:
+  title: Holiday Meal Planner API
+  description: |
+    REST API for processing holiday menus and generating consolidated grocery lists
+    with day-by-day preparation timelines. Supports both recipe URL extraction and
+    free-text dish descriptions.
+  version: 1.0.0
+  contact:
+    name: Holiday Meal Planner
+    url: https://github.com/your-org/holiday-meal-planner
+
+servers:
+  - url: https://api.holiday-meal-planner.com/v1
+    description: Production server
+  - url: http://localhost:8000/v1
+    description: Local development server
+
+paths:
+  /process:
+    post:
+      summary: Process holiday menu and generate grocery list + timeline
+      description: |
+        Primary endpoint that processes a collection of holiday dishes (URLs and/or descriptions)
+        and returns a consolidated grocery list with day-by-day preparation timeline.
+
+        Corresponds to User Story 1 (Recipe Processing) and User Story 2 (Timeline Planning).
+      operationId: processMenu
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuProcessRequest'
+            examples:
+              mixed_menu:
+                summary: Mixed URLs and descriptions
+                value:
+                  menu_items:
+                    - source_url: "https://allrecipes.com/recipe/turkey-stuffing"
+                      serving_size: 8
+                    - description: "mashed potatoes for 10 people with butter and cream"
+                      serving_size: 10
+                    - source_url: "https://foodnetwork.com/cranberry-sauce"
+                  meal_datetime: "2026-11-28T14:00:00Z"
+                  max_prep_days: 3
+                  max_daily_hours: 4
+      responses:
+        '200':
+          description: Successfully processed menu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /process/async:
+    post:
+      summary: Start asynchronous menu processing
+      description: |
+        Initiates background processing for large menus. Returns job ID for status polling.
+        Useful for menus with many items or slow recipe websites.
+      operationId: processMenuAsync
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuProcessRequest'
+      responses:
+        '202':
+          description: Processing started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncJobResponse'
+
+  /jobs/{jobId}:
+    get:
+      summary: Get processing job status
+      description: Check status of asynchronous menu processing job
+      operationId: getJobStatus
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Job status retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobStatus'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /recipes/extract:
+    post:
+      summary: Extract ingredients from single recipe URL
+      description: |
+        Utility endpoint for extracting ingredients from a single recipe URL.
+        Useful for testing or individual recipe processing.
+      operationId: extractRecipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeExtractionRequest'
+      responses:
+        '200':
+          description: Recipe extracted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeExtractionResult'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /ingredients/consolidate:
+    post:
+      summary: Consolidate ingredient lists
+      description: |
+        Utility endpoint for consolidating multiple ingredient lists into a unified grocery list.
+        Handles unit conversion and duplicate merging.
+      operationId: consolidateIngredients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ingredient_lists:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ingredient'
+              required: [ingredient_lists]
+      responses:
+        '200':
+          description: Ingredients consolidated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedGroceryList'
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Simple health check for monitoring and load balancing
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+components:
+  schemas:
+    MenuProcessRequest:
+      type: object
+      required: [menu_items]
+      properties:
+        menu_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItemInput'
+          minItems: 1
+          maxItems: 20
+        meal_datetime:
+          type: string
+          format: date-time
+          description: Target date and time for the meal
+          example: "2026-11-28T14:00:00Z"
+        max_prep_days:
+          type: integer
+          minimum: 1
+          maximum: 7
+          default: 3
+          description: Maximum days in advance to schedule preparation
+        max_daily_hours:
+          type: number
+          minimum: 1.0
+          maximum: 12.0
+          default: 4.0
+          description: Maximum hours of preparation work per day
+
+    MenuItemInput:
+      type: object
+      properties:
+        source_url:
+          type: string
+          format: uri
+          pattern: "^https://"
+          description: Recipe URL (HTTPS only)
+          example: "https://allrecipes.com/recipe/123/turkey-stuffing"
+        description:
+          type: string
+          minLength: 10
+          maxLength: 500
+          description: Free-text description of the dish
+          example: "traditional turkey stuffing with sage and cranberries"
+        serving_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 8
+          description: Number of people this dish serves
+      anyOf:
+        - required: [source_url]
+        - required: [description]
+
+    ProcessingResult:
+      type: object
+      required: [grocery_list, prep_timeline, processed_items, generated_at]
+      properties:
+        grocery_list:
+          $ref: '#/components/schemas/ConsolidatedGroceryList'
+        prep_timeline:
+          $ref: '#/components/schemas/Timeline'
+        processed_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProcessedMenuItem'
+        failed_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FailedMenuItem'
+        processing_metadata:
+          $ref: '#/components/schemas/ProcessingMetadata'
+        generated_at:
+          type: string
+          format: date-time
+
+    ConsolidatedGroceryList:
+      type: object
+      required: [ingredients, total_items, generated_at]
+      properties:
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        total_items:
+          type: integer
+          minimum: 0
+        consolidation_notes:
+          type: array
+          items:
+            type: string
+          description: Notes about ingredient merging decisions
+        generated_at:
+          type: string
+          format: date-time
+        serving_size:
+          type: integer
+          description: Total serving size for entire menu
+
+    Ingredient:
+      type: object
+      required: [name, quantity, unit]
+      properties:
+        name:
+          type: string
+          description: Canonical ingredient name
+          example: "all-purpose flour"
+        quantity:
+          type: number
+          minimum: 0
+          description: Amount needed
+          example: 2.5
+        unit:
+          type: string
+          enum: [cup, tablespoon, teaspoon, fluid_ounce, pint, quart, gallon,
+                 liter, milliliter, pound, ounce, gram, kilogram, whole, piece,
+                 clove, bunch, package, to_taste, pinch, dash]
+          example: "cups"
+        category:
+          type: string
+          enum: [protein, vegetable, fruit, dairy, grain, herb, spice, fat, other]
+          example: "grain"
+        confidence:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+          description: Extraction confidence score
+        original_text:
+          type: string
+          description: Original text from which ingredient was extracted
+
+    Timeline:
+      type: object
+      required: [meal_date, days, total_prep_time]
+      properties:
+        meal_date:
+          type: string
+          format: date-time
+          description: Target meal date and time
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DayPlan'
+        critical_path:
+          type: array
+          items:
+            type: string
+          description: Task IDs on the critical path
+        total_prep_time:
+          type: integer
+          description: Total preparation time in minutes
+        complexity_score:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: Overall difficulty rating
+        optimization_notes:
+          type: array
+          items:
+            type: string
+
+    DayPlan:
+      type: object
+      required: [day_offset, date, tasks, total_duration]
+      properties:
+        day_offset:
+          type: integer
+          minimum: 0
+          maximum: 7
+          description: Days before meal (0 = day of meal)
+        date:
+          type: string
+          format: date
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrepTask'
+        total_duration:
+          type: integer
+          description: Total time for all tasks in minutes
+        workload_level:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Subjective difficulty rating
+        notes:
+          type: string
+          description: Additional guidance for the day
+
+    PrepTask:
+      type: object
+      required: [id, dish_name, task_description, estimated_duration]
+      properties:
+        id:
+          type: string
+          description: Unique task identifier
+        dish_name:
+          type: string
+          description: Name of associated dish
+        task_description:
+          type: string
+          description: What needs to be done
+        estimated_duration:
+          type: integer
+          minimum: 1
+          description: Time in minutes
+        dependencies:
+          type: array
+          items:
+            type: string
+          description: Task IDs that must complete first
+        timing_type:
+          type: string
+          enum: [make_ahead, day_before, day_of_early, day_of_late, immediate]
+        confidence:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+
+    ProcessedMenuItem:
+      allOf:
+        - $ref: '#/components/schemas/MenuItemInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            extracted_title:
+              type: string
+            ingredients_count:
+              type: integer
+            processing_time_ms:
+              type: integer
+
+    FailedMenuItem:
+      allOf:
+        - $ref: '#/components/schemas/MenuItemInput'
+        - type: object
+          properties:
+            error_message:
+              type: string
+            error_code:
+              type: string
+            retry_suggested:
+              type: boolean
+
+    ProcessingMetadata:
+      type: object
+      properties:
+        total_processing_time_ms:
+          type: integer
+        items_processed:
+          type: integer
+        items_failed:
+          type: integer
+        success_rate:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+        web_requests_made:
+          type: integer
+        average_confidence:
+          type: number
+
+    RecipeExtractionRequest:
+      type: object
+      required: [url]
+      properties:
+        url:
+          type: string
+          format: uri
+          pattern: "^https://"
+        serving_size:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 8
+
+    RecipeExtractionResult:
+      type: object
+      properties:
+        title:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        prep_time:
+          type: integer
+        cook_time:
+          type: integer
+        confidence_score:
+          type: number
+        extraction_method:
+          type: string
+          enum: [json_ld, microdata, html_patterns, llm_fallback]
+
+    AsyncJobResponse:
+      type: object
+      required: [job_id, status]
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [queued, processing, completed, failed]
+        estimated_completion:
+          type: string
+          format: date-time
+
+    JobStatus:
+      type: object
+      required: [job_id, status]
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [queued, processing, completed, failed]
+        progress:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+        result:
+          $ref: '#/components/schemas/ProcessingResult'
+        error:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: object
+          description: Additional error context
+        request_id:
+          type: string
+          description: Request identifier for debugging
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "INVALID_REQUEST"
+            message: "Request must include at least one menu item"
+
+    ValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "VALIDATION_ERROR"
+            message: "URL must use HTTPS protocol"
+            details:
+              field: "menu_items[0].source_url"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for rate limiting and authentication
+
+security:
+  - ApiKey: []
+
+tags:
+  - name: core
+    description: Core meal planning functionality
+  - name: utilities
+    description: Individual component utilities
+  - name: async
+    description: Asynchronous processing
+  - name: health
+    description: Service health and monitoring

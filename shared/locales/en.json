@@ -1,0 +1,124 @@
+{
+  "grocery_list": {
+    "header": "🛒 Grocery List for {serving_size} people",
+    "items_count": "• {total_items} items",
+    "generated": "📅 Generated: {timestamp}",
+    "consolidation_notes": "📋 Consolidation Notes:",
+    "no_items": "No items in grocery list"
+  },
+  "timeline": {
+    "header": "📅 Preparation Timeline for {meal_date}",
+    "total_prep_time": "⏱️  Total prep time: {hours}h {minutes}m",
+    "complexity": "Complexity: {stars} ({score}/10)",
+    "optimization_notes": "💡 Optimization Notes:",
+    "day_of_meal": "🍽️  {day_name} (Day of Meal)",
+    "one_day_before": "📅 {day_name} (1 Day Before)",
+    "days_before": "📅 {day_name} ({days} Days Before)",
+    "workload": "Workload: {stars} ({level}/5)",
+    "duration_hours": "Duration: {hours}h {minutes}m",
+    "duration_minutes": "Duration: {minutes}m",
+    "no_tasks": "No specific tasks scheduled",
+    "depends_on": "depends on: {dependencies}",
+    "no_timeline": "📅 No preparation timeline available"
+  },
+  "categories": {
+    "protein": "🥩 Protein",
+    "vegetable": "🥕 Vegetables",
+    "fruit": "🍎 Fruits",
+    "dairy": "🥛 Dairy",
+    "grain": "🌾 Grains",
+    "herb": "🌿 Herbs",
+    "spice": "🌶️ Spices",
+    "fat": "🧈 Fats",
+    "other": "🔹 Other"
+  },
+  "units": {
+    "cup": "cup",
+    "cups": "cups",
+    "tablespoon": "tablespoon",
+    "tablespoons": "tablespoons",
+    "teaspoon": "teaspoon",
+    "teaspoons": "teaspoons",
+    "fluid_ounce": "fl oz",
+    "pint": "pint",
+    "quart": "quart",
+    "gallon": "gallon",
+    "liter": "liter",
+    "milliliter": "ml",
+    "pound": "pound",
+    "pounds": "pounds",
+    "ounce": "ounce",
+    "ounces": "ounces",
+    "gram": "gram",
+    "grams": "grams",
+    "kilogram": "kg",
+    "whole": "whole",
+    "piece": "piece",
+    "pieces": "pieces",
+    "clove": "clove",
+    "cloves": "cloves",
+    "bunch": "bunch",
+    "package": "package",
+    "to_taste": "to taste",
+    "pinch": "pinch",
+    "dash": "dash"
+  },
+  "timing": {
+    "make_ahead": "📦",
+    "day_before": "🌙",
+    "day_of_early": "🌅",
+    "day_of_late": "🍳",
+    "immediate": "⚡"
+  },
+  "processing": {
+    "header": "🍽️  Holiday Meal Planning Results",
+    "summary": "✅ Processed {items_processed} items in {processing_time}s ({success_rate}% success rate)",
+    "failed_items": "⚠️  Failed to Process {count} Items:",
+    "retry_suggested": "💡 Retry suggested",
+    "details": "📊 Processing Details:",
+    "processing_time": "Processing time: {seconds} seconds",
+    "web_requests": "Web requests made: {count}",
+    "average_confidence": "Average confidence: {confidence}",
+    "processed_items": "Processed Items ({count}):",
+    "more_items": "... and {count} more items"
+  },
+  "progress": {
+    "phase": "🔄 {phase}: {current}/{total} {item_name}",
+    "percentage": "{percentage}%"
+  },
+  "errors": {
+    "security_suggestions": [
+      "Ensure URLs use HTTPS protocol",
+      "Check that the URL is from a trusted recipe site"
+    ],
+    "webscraping_suggestions": [
+      "Verify the URL is accessible and contains a valid recipe",
+      "Try a different recipe site if this one is having issues",
+      "Check your internet connection"
+    ],
+    "parsing_suggestions": [
+      "Try using a description instead of a URL",
+      "Ensure the URL points to a recipe page (not a blog post or index)",
+      "Some recipe sites may not be supported yet"
+    ],
+    "validation_suggestions": [
+      "Check that all required fields are provided",
+      "Verify serving size is reasonable (1-100 people)"
+    ],
+    "consolidation_suggestions": [
+      "Some ingredients may have conflicting units",
+      "Try processing with a lower similarity threshold"
+    ],
+    "default_suggestions": [
+      "Please check your input and try again",
+      "If the problem persists, try a different approach"
+    ],
+    "context": "📝 Context:",
+    "suggestions": "💡 Suggestions:"
+  },
+  "confidence": {
+    "high": "✅ {percentage}%",
+    "medium": "⚠️  {percentage}%",
+    "low": "❓ {percentage}%"
+  }
+}
